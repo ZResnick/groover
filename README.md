@@ -22,7 +22,7 @@ To use this as boilerplate, you'll need to take the following steps:
 * Run the following commands:
 
 ```
-git remote add boilermaker https://github.com/FullstackAcademy/boilermaker.git
+git remote add boilermaker https://github.com/ZRESNICK/boilermaker.git
 git fetch boilermaker
 git merge boilermaker/master
 ```
