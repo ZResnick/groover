@@ -1,3 +1,5 @@
+# Boilermaker
+
 ## Quick Start Guide:
 
 * create an empty repo on Github and clone it to your local machine
@@ -8,7 +10,7 @@
 * Update title on index.html in public
 * Create two postgres databases (`MY_APP_NAME` should match the `name` parameter in `package.json`):
   * createdb $MY_APP_NAME
-  * createdb $MY_APP_NAME-test
+  * createdb $MY_APP_NAME-test (make sure this matches travis.yml)
 * Get OAuth credentials from google:
   * visit https://support.google.com/cloud/answer/6158849?hl=en
   * crete a new project
@@ -21,6 +23,23 @@
     * process.env.GOOGLE_CLIENT_SECRET = 'pretty secret'
     * process.env.GOOGLE_CALLBACK = '/auth/google/callback'
 * npm run start-dev
+
+## Deployment with Heroku - Quick Start Guide
+
+* Type into the CLI:
+  * heroku login
+  * heroku create my-apps-name
+* Look at the remotes we currently have using => git remote -v
+  * if heroku links appear, continue...
+* CLI: git push heroku master
+* CLI: heroku logs --tail
+* CLI: npm run delpoy
+* In heroku, go to overview > configure add-ons:
+  * search for postgres and click Heroku Postgres > Hobby Dev-Free, click provision
+* CLI: heroku run bash
+* CLI: npm run seed
+* At this point your app should be running on heroku.
+* Follow steps 1-4 at Travis
 
 # Boilermaker
 
