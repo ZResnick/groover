@@ -5,6 +5,7 @@
 * git fetch boilermaker
 * git merge boilermaker/master
 * Update project name and description in `package.json` and `.travis.yml` files
+* Update title on index.html in public
 * Create two postgres databases (`MY_APP_NAME` should match the `name` parameter in `package.json`):
   * createdb $MY_APP_NAME
   * createdb $MY_APP_NAME-test
