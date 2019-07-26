@@ -1,3 +1,26 @@
+## Quick Start Guide:
+
+* create an empty repo on Github and clone it to your local machine
+* git remote add boilermaker https://github.com/ZRESNICK/boilermaker.git
+* git fetch boilermaker
+* git merge boilermaker/master
+* Update project name and description in `package.json` and `.travis.yml` files
+* Create two postgres databases (`MY_APP_NAME` should match the `name` parameter in `package.json`):
+  * createdb $MY_APP_NAME
+  * createdb $MY_APP_NAME-test
+* Get OAuth credentials from google:
+  * visit https://support.google.com/cloud/answer/6158849?hl=en
+  * crete a new project
+  * navigate to APIs and Services
+  * Click Credentials, New Credentials, OAuth Client ID
+  * Authorized JavaScript Origins === http://localhost:PORT-FROM-server/index.js
+  * Authorized Redirect URIs === http://localhost:PORT/auth/google/callback
+  * add thr given client id and secret as string to secrets.js:
+    * process.env.GOOGLE_CLIENT_ID = 'hush hush'
+    * process.env.GOOGLE_CLIENT_SECRET = 'pretty secret'
+    * process.env.GOOGLE_CALLBACK = '/auth/google/callback'
+* npm run start-dev
+
 # Boilermaker
 
 _Good things come in pairs_
