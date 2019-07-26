@@ -7,7 +7,7 @@ const passport = require('passport')
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const db = require('./db')
 const sessionStore = new SequelizeStore({db})
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 7693
 const app = express()
 const socketio = require('socket.io')
 module.exports = app
@@ -54,7 +54,9 @@ const createApp = () => {
   // session middleware with passport
   app.use(
     session({
-      secret: process.env.SESSION_SECRET || 'my best friend is Cody',
+      secret:
+        process.env.SESSION_SECRET ||
+        'A wildly irresponsible and insecure secret!',
       store: sessionStore,
       resave: false,
       saveUninitialized: false
@@ -90,14 +92,18 @@ const createApp = () => {
   app.use((err, req, res, next) => {
     console.error(err)
     console.error(err.stack)
-    res.status(err.status || 500).send(err.message || 'Internal server error.')
+    res
+      .status(err.status || 500)
+      .send(
+        err.message || 'Oops! It seems like there was an internal server error.'
+      )
   })
 }
 
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
   const server = app.listen(PORT, () =>
-    console.log(`Mixing it up on port ${PORT}`)
+    console.log(`Solemnly swearing we're up to no good on localhost:${PORT}`)
   )
 
   // set up our socket control center
@@ -106,6 +112,7 @@ const startListening = () => {
 }
 
 const syncDb = () => db.sync()
+//db.sync({ force: true }); if you want to rebuild the table
 
 async function bootApp() {
   await sessionStore.sync()
