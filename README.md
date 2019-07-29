@@ -2,44 +2,59 @@
 
 ## Quick Start Guide:
 
-* create an empty repo on Github and clone it to your local machine
-* git remote add boilermaker https://github.com/ZRESNICK/boilermaker.git
-* git fetch boilermaker
-* git merge boilermaker/master
-* Update project name and description in `package.json` and `.travis.yml` files
-* Update title on index.html in public
-* Create two postgres databases (`MY_APP_NAME` should match the `name` parameter in `package.json`):
-  * createdb $MY_APP_NAME
-  * createdb $MY_APP_NAME-test (make sure this matches travis.yml)
-* Get OAuth credentials from google:
-  * visit https://support.google.com/cloud/answer/6158849?hl=en
-  * crete a new project
-  * navigate to APIs and Services
-  * Click Credentials, New Credentials, OAuth Client ID
-  * Authorized JavaScript Origins === http://localhost:PORT-FROM-server/index.js
-  * Authorized Redirect URIs === http://localhost:PORT/auth/google/callback
-  * add thr given client id and secret as string to secrets.js:
-    * process.env.GOOGLE_CLIENT_ID = 'hush hush'
-    * process.env.GOOGLE_CLIENT_SECRET = 'pretty secret'
-    * process.env.GOOGLE_CALLBACK = '/auth/google/callback'
-* npm run start-dev
+1.  create an empty repo on Github and clone it to your local machine
+2.  git remote add boilermaker https://github.com/ZRESNICK/boilermaker.git
+3.  git fetch boilermaker
+4.  git merge boilermaker/master
+5.  Update project name and description in `package.json` and `.travis.yml` files
+6.  Update title on index.html in public
+7.  Create two postgres databases (`MY_APP_NAME` should match the `name` parameter in `package.json`):
+    7.1 createdb $MY_APP_NAME
+    7.2 createdb $MY_APP_NAME-test (make sure this matches travis.yml)
+8.  Get OAuth credentials from google:
+    8.1 visit https://support.google.com/cloud/answer/6158849?hl=en
+    8.2 crete a new project
+    8.3 navigate to APIs and Services
+    8.4 Click Credentials, New Credentials, OAuth Client ID
+    8.5 Authorized JavaScript Origins === http://localhost:PORT-FROM-server/index.js
+    8.6 Authorized Redirect URIs === http://localhost:PORT/auth/google/callback
+    8.7 add thr given client id and secret as string to secrets.js:
+    8.7.1 process.env.GOOGLE_CLIENT_ID = 'hush hush'
+    8.7.2 process.env.GOOGLE_CLIENT_SECRET = 'pretty secret'
+    8.7.3 process.env.GOOGLE_CALLBACK = '/auth/google/callback'
+9.  npm run start-dev
 
 ## Deployment with Heroku - Quick Start Guide
 
-* Type into the CLI:
-  * heroku login
-  * heroku create my-apps-name
-* Look at the remotes we currently have using => git remote -v
-  * if heroku links appear, continue...
-* CLI: git push heroku master
-* CLI: heroku logs --tail
-* CLI: npm run delpoy
-* In heroku, go to overview > configure add-ons:
-  * search for postgres and click Heroku Postgres > Hobby Dev-Free, click provision
-* CLI: heroku run bash
-* CLI: npm run seed
-* At this point your app should be running on heroku.
-* Follow steps 1-4 at Travis
+Heroku:
+
+1.  Type into the CLI:
+    1.1 heroku login
+    1.2 heroku create my-apps-name
+2.  Look at the remotes we currently have using => git remote -v
+    2.1 if heroku links appear, continue...
+3.  CLI: git push heroku master
+4.  CLI: heroku logs --tail
+5.  CLI: npm run delpoy
+6.  In heroku, go to overview > configure add-ons:
+    6.1 search for postgres and click Heroku Postgres > Hobby Dev-Free, click provision
+7.  CLI: heroku run bash
+8.  CLI: npm run seed
+9.  At this point your app should be running on heroku.
+
+Travis:
+
+1.  Enable repo in travis website: https://travis-ci.org/
+2.  git checkout master && git pull && git checkout -b f/travis-deploy
+3.  npm run heroku-token
+4.  git add .travis.yml
+5.  git commit -m “travis: activate deployment”
+6.  git push -u origin f/travis-deploy
+7.  git checkout master
+8.  git pull
+9.  git merge f/travis-deploy
+10. npm run deploy
+11. you can now check https://<your-app-name>.herokuapp.com
 
 # Boilermaker
 
