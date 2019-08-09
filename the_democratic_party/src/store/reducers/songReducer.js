@@ -24,6 +24,44 @@ export const addASong = song => async (
   }
 };
 
+//this route will need to find the song by the song id and increment the upvotes
+export const upvote = (id, votes) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  try {
+    const firestore = getFirestore();
+    const songToUpdate = await firestore.collection('Songs').doc(id);
+    await songToUpdate.update({
+      upvotes: votes + 1,
+    });
+    console.log(songToUpdate.upvotes);
+    history.push('/');
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+//this route will need to find the song by the song id and decrement the upvotes
+export const downvote = (id, votes) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  try {
+    const firestore = getFirestore();
+    const songToUpdate = await firestore.collection('Songs').doc(id);
+    await songToUpdate.update({
+      upvotes: votes - 1,
+    });
+    console.log(songToUpdate.upvotes);
+    history.push('/');
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const songReducer = (state = initialState, action) => {
   switch (action.type) {
     default:

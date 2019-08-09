@@ -9,8 +9,8 @@ import { compose } from 'redux';
 export class AllSongs extends Component {
   render() {
     const { songs } = this.props;
-    // const orderedSongs =
-    //   songs && songs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
+    const orderedSongs =
+      songs && songs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
     return (
       <div className="allSongs container">
         <h3 className="center">All Songs</h3>
@@ -24,7 +24,7 @@ export class AllSongs extends Component {
               <th>Votes</th>
             </tr>
             {songs &&
-              songs.map(song => {
+              orderedSongs.map(song => {
                 return <SingleSong key={song.id} {...song} />;
               })}
           </tbody>

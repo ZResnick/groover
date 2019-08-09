@@ -1,23 +1,50 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { upvote, downvote } from '../../store/reducers/songReducer';
 
-export default function SingleSong(props) {
-  let minutes = Math.floor(props.length);
-  let seconds = Math.floor((props.length * 60) % 60);
+class SingleSong extends Component {
+  downvote(id, votes) {
+    console.log(id);
+    this.props.downvote(id, votes);
+  }
 
-  return (
-    <tr className="singleSong">
-      <th>{props.title}</th>
-      <th>{props.artist}</th>
-      <th>{props.album}</th>
-      <th>
-        {minutes}:{seconds}
-      </th>
-      <th>
-        <button onClick={() => this.upvote(props.id)}>{`<`}</button>
-        {props.upvotes}
-        <button onClick={() => this.upvote(props.id)}>{`>`}</button>
-      </th>
-    </tr>
-  );
+  upvote(id, votes) {
+    console.log(id);
+    this.props.upvote(id, votes);
+  }
+
+  render() {
+    let minutes = Math.floor(this.props.length);
+    let seconds = Math.floor((this.props.length * 60) % 60);
+
+    return (
+      <tr className="singleSong">
+        <th>{this.props.title}</th>
+        <th>{this.props.artist}</th>
+        <th>{this.props.album}</th>
+        <th>
+          {minutes}:{seconds}
+        </th>
+        <th>
+          <button
+            onClick={() => this.downvote(this.props.id, this.props.upvotes)}
+          >{`<`}</button>
+          {this.props.upvotes}
+          <button
+            onClick={() => this.upvote(this.props.id, this.props.upvotes)}
+          >{`>`}</button>
+        </th>
+      </tr>
+    );
+  }
 }
+
+const mapDispatchToProps = dispatch => ({
+  upvote: (id, votes) => dispatch(upvote(id, votes)),
+  downvote: (id, votes) => dispatch(downvote(id, votes)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SingleSong);
