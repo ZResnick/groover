@@ -8,9 +8,11 @@ import { compose } from 'redux';
 
 export class AllSongs extends Component {
   render() {
-    const { songs } = this.props;
-    const orderedSongs =
-      songs && songs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
+    let { songs } = this.props;
+    let pageSongs = songs && [...songs];
+    let orderedSongs =
+      pageSongs && pageSongs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
+    console.log(orderedSongs);
     return (
       <div className="allSongs container">
         <h3 className="center">All Songs</h3>
@@ -36,7 +38,6 @@ export class AllSongs extends Component {
 
 // mapDispatch;
 const mapStateToProps = state => {
-  console.log(state);
   return {
     songs: state.firestore.ordered.Songs,
   };
