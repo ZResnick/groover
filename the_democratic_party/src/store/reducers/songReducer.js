@@ -36,7 +36,6 @@ export const upvote = (id, votes) => async (
     await songToUpdate.update({
       upvotes: votes + 1,
     });
-    console.log(songToUpdate.upvotes);
     history.push('/');
   } catch (err) {
     console.error(err);
@@ -55,7 +54,6 @@ export const downvote = (id, votes) => async (
     await songToUpdate.update({
       upvotes: votes - 1,
     });
-    console.log(songToUpdate.upvotes);
     history.push('/');
   } catch (err) {
     console.error(err);

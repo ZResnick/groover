@@ -20,7 +20,6 @@ export default class SignUp extends Component {
 
   handelSubmit = evt => {
     evt.preventDefault();
-    console.log(this.state);
   };
 
   render() {
