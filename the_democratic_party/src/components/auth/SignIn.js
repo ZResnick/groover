@@ -22,7 +22,6 @@ export default class SignIn extends Component {
 
   handelSubmit = evt => {
     evt.preventDefault();
-    console.log(this.state);
   };
 
   render() {

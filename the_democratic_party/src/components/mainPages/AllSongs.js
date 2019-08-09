@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SingleSong from './SingleSong';
 import { connect } from 'react-redux';
+import Spotify from './Spotify';
 
 //connect certain compomnents with the firestore using the firestoreConnect and compose at the bottom of this file:
 import { firestoreConnect } from 'react-redux-firebase';
@@ -12,7 +13,6 @@ export class AllSongs extends Component {
     let pageSongs = songs && [...songs];
     let orderedSongs =
       pageSongs && pageSongs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
-    console.log(orderedSongs);
     return (
       <div className="allSongs container">
         <h3 className="center">All Songs</h3>
@@ -31,6 +31,7 @@ export class AllSongs extends Component {
               })}
           </tbody>
         </table>
+        <Spotify className="spotifyPlayer" />
       </div>
     );
   }

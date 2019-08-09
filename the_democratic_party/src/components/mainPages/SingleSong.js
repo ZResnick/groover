@@ -4,12 +4,10 @@ import { upvote, downvote } from '../../store/reducers/songReducer';
 
 class SingleSong extends Component {
   downvote(id, votes) {
-    console.log(id);
     this.props.downvote(id, votes);
   }
 
   upvote(id, votes) {
-    console.log(id);
     this.props.upvote(id, votes);
   }
 
