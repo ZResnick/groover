@@ -10,6 +10,7 @@ export class AdminPage extends Component {
       artist: '',
       album: '',
       length: '',
+      upvotes: 0,
     };
 
     this.handleChange = this.handelChange.bind(this);
@@ -30,6 +31,7 @@ export class AdminPage extends Component {
       artist: '',
       album: '',
       length: '',
+      upvotes: 0,
     });
   };
 

@@ -9,15 +9,26 @@ import { compose } from 'redux';
 export class AllSongs extends Component {
   render() {
     const { songs } = this.props;
+    // const orderedSongs =
+    //   songs && songs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
     return (
       <div className="allSongs container">
         <h3 className="center">All Songs</h3>
-        <ul className="container">
-          {songs &&
-            songs.map(song => {
-              return <SingleSong key={song.id} {...song} />;
-            })}
-        </ul>
+        <table className="container">
+          <tbody>
+            <tr>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Album</th>
+              <th>Run Time</th>
+              <th>Votes</th>
+            </tr>
+            {songs &&
+              songs.map(song => {
+                return <SingleSong key={song.id} {...song} />;
+              })}
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -37,5 +48,5 @@ export default compose(
     mapStateToProps,
     null
   ),
-  firestoreConnect([{ collection: 'Songs' }])
+  firestoreConnect([{ collection: 'Songs', orderBy: [['upvotes', 'desc']] }])
 )(AllSongs);
