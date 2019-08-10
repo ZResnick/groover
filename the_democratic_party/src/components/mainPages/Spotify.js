@@ -50,7 +50,6 @@ class Spotify extends Component {
       });
     });
   }
-  å;
 
   render() {
     return (

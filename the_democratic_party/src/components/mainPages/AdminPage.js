@@ -25,7 +25,7 @@ export class AdminPage extends Component {
   }
 
   componentDidMount() {
-    let _token = this.props.tokens[0];
+    let _token = this.props.tokens && this.props.tokens[0];
     if (_token) {
       // Set token
       this.setState({
