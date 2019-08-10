@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import * as $ from 'jquery';
 import { authEndpoint, clientId, redirectUri, scopes } from './spotifyConfig';
 import hash from './hash';
 import Player from './Player';
 import { addTokenToFirestore } from '../../store/reducers/authReducer';
 import { connect } from 'react-redux';
+import SpotifyWebApi from 'spotify-web-api-js';
+var spotifyApi = new SpotifyWebApi();
 
 class Spotify extends Component {
   constructor() {
@@ -33,59 +34,23 @@ class Spotify extends Component {
       this.setState({
         token: _token,
       });
+      spotifyApi.setAccessToken(_token);
       this.getCurrentlyPlaying(_token);
-      this.playThisSong(_token);
-      this.viewDevices(_token);
       this.props.addTokenToFirestore(_token);
     }
   }
 
   getCurrentlyPlaying(token) {
     // Make a call using the token
-    $.ajax({
-      url: 'https://api.spotify.com/v1/me/player',
-      type: 'GET',
-      beforeSend: xhr => {
-        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-      },
-      success: data => {
-        this.setState({
-          item: data.item,
-          is_playing: data.is_playing,
-          progress_ms: data.progress_ms,
-        });
-      },
+    spotifyApi.getMyCurrentPlayingTrack(null, (err, data) => {
+      this.setState({
+        item: data.item,
+        is_playing: data.is_playing,
+        progress_ms: data.progress_ms,
+      });
     });
   }
-
-  playThisSong(token) {
-    // Make a call using the token
-    $.ajax({
-      url: 'https://api.spotify.com/v1/search?q=better%20now&type=track',
-      type: 'GET',
-      beforeSend: xhr => {
-        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-      },
-      success: data => {
-        //console.log('data.tracks.items.0.uri:', data.tracks.items[0].uri);
-        //let songUri = data.tracks.items[0].uri;
-      },
-    });
-  }
-
-  viewDevices(token) {
-    // Make a call using the token
-    $.ajax({
-      url: 'https://api.spotify.com/v1/me/player/devices',
-      type: 'GET',
-      beforeSend: xhr => {
-        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-      },
-      success: data => {
-        //console.log('devices', data);
-      },
-    });
-  }
+  å;
 
   render() {
     return (

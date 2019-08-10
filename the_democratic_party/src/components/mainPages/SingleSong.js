@@ -12,8 +12,9 @@ class SingleSong extends Component {
   }
 
   render() {
-    let minutes = Math.floor(this.props.length);
-    let seconds = Math.floor((this.props.length * 60) % 60);
+    let timeInSeconds = this.props.length / 1000;
+    let minutes = Math.floor(timeInSeconds / 60);
+    let seconds = Math.floor((timeInSeconds / 60 - minutes) * 60);
 
     return (
       <tr className="singleSong">
