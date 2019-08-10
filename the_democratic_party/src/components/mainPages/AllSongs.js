@@ -7,7 +7,25 @@ import Spotify from './Spotify';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 
+//spotify web api
+import SpotifyWebApi from 'spotify-web-api-js';
+var spotifyApi = new SpotifyWebApi();
+
 export class AllSongs extends Component {
+  componentDidMount() {
+    if (this.props.tokens) {
+      let token = this.props.tokens[0].token;
+      spotifyApi.setAccessToken(token);
+      this.getCurrentlyPlaying(token);
+    }
+  }
+
+  getCurrentlyPlaying(token) {
+    spotifyApi.getMyCurrentPlayingTrack(null, (err, data) => {
+      console.log(data);
+    });
+  }
+
   render() {
     let { songs, tokens } = this.props;
     let pageSongs = songs && [...songs];
