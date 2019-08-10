@@ -2,12 +2,6 @@ import history from '../../history';
 
 const initialState = []; //this will be an array of objects
 
-//CONSTANTS:
-// const ADDED_A_SONG = 'ADDED_A_SONG';
-
-//ACTION CREATORS
-// const addedASong = song => ({ type: ADDED_A_SONG, song });
-
 //THUNKS
 export const addASong = song => async (
   dispatch,
@@ -60,6 +54,7 @@ export const downvote = (id, votes) => async (
   }
 };
 
+//this reducer is unnessecary with firestore but its my defaukt export so im keeping it as a dummy
 const songReducer = (state = initialState, action) => {
   switch (action.type) {
     default:

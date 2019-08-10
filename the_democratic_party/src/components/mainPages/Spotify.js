@@ -68,7 +68,7 @@ class Spotify extends Component {
       },
       success: data => {
         //console.log('data.tracks.items.0.uri:', data.tracks.items[0].uri);
-        let songUri = data.tracks.items[0].uri;
+        //let songUri = data.tracks.items[0].uri;
       },
     });
   }

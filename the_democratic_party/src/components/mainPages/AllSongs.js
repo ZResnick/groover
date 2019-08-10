@@ -16,29 +16,32 @@ export class AllSongs extends Component {
     let orderedSongs =
       pageSongs && pageSongs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
     return (
-      <div className="allSongs container">
-        <h3 className="center">All Songs</h3>
-        <table className="container">
-          <tbody>
-            <tr>
-              <th>Title</th>
-              <th>Artist</th>
-              <th>Album</th>
-              <th>Run Time</th>
-              <th>Votes</th>
-            </tr>
-            {songs &&
-              orderedSongs.map(song => {
-                return <SingleSong key={song.id} {...song} />;
-              })}
-          </tbody>
-        </table>
+      <div>
+        <div className="allSongs container">
+          <h3 className="center">All Songs</h3>
+          <table className="container">
+            <tbody>
+              <tr>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Album</th>
+                <th>Run Time</th>
+                <th>Votes</th>
+              </tr>
+              {songs &&
+                orderedSongs.map(song => {
+                  return <SingleSong key={song.id} {...song} />;
+                })}
+            </tbody>
+          </table>
+        </div>
+        <div>{token && <Spotify />}</div>
       </div>
     );
   }
 }
 
-// mapDispatch;
+// mapState;
 const mapStateToProps = state => {
   return {
     songs: state.firestore.ordered.Songs,
