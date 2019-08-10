@@ -12,7 +12,6 @@ export class AllSongs extends Component {
     let { songs, tokens } = this.props;
     let pageSongs = songs && [...songs];
     let token = tokens && tokens[0];
-    console.log(token);
     let orderedSongs =
       pageSongs && pageSongs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
     return (

@@ -6,6 +6,8 @@ import Spotify from './Spotify';
 //connect certain compomnents with the firestore using the firestoreConnect and compose at the bottom of this file:
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+import SpotifyWebApi from 'spotify-web-api-js';
+var spotifyApi = new SpotifyWebApi();
 
 export class AdminPage extends Component {
   constructor() {
@@ -15,11 +17,22 @@ export class AdminPage extends Component {
       artist: '',
       album: '',
       length: '',
-      upvotes: 0,
+      token: '',
     };
 
     this.handleChange = this.handelChange.bind(this);
     this.handleSubmit = this.handelSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    let _token = this.props.tokens[0];
+    if (_token) {
+      // Set token
+      this.setState({
+        token: _token.token,
+      });
+      spotifyApi.setAccessToken(_token.token);
+    }
   }
 
   handelChange = evt => {
@@ -30,14 +43,26 @@ export class AdminPage extends Component {
 
   handelSubmit = evt => {
     evt.preventDefault();
-
-    this.props.addASong(this.state);
+    spotifyApi.searchTracks(this.state.title, null, (err, data) => {
+      //could put a utility feature here to filter songs by track and artist but going to simplest option first, taking rhe first song
+      let firstSong = data.tracks.items[0];
+      console.log(firstSong);
+      let songToAdd = {
+        title: firstSong.name,
+        artist: firstSong.artists[0].name,
+        album: firstSong.album.name,
+        length: firstSong.duration_ms,
+        upvotes: 0,
+        songId: firstSong.id,
+        uri: firstSong.uri,
+      };
+      this.props.addASong(songToAdd);
+    });
     this.setState({
       title: '',
       artist: '',
       album: '',
       length: '',
-      upvotes: 0,
     });
   };
 
@@ -46,42 +71,13 @@ export class AdminPage extends Component {
       <div>
         <div className="container">
           <form onSubmit={this.handleSubmit} className="white">
-            <h5 className="grey-text text-darken-3">Add a Song:</h5>
+            <h5 className="grey-text text-darken-3">Add a Song By Title:</h5>
             <div className="input-field">
               <label htmlFor="title">Song Title</label>
               <input
                 type="text"
                 id="title"
                 value={this.state.title}
-                onChange={this.handleChange}
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="artist">Artist</label>
-              <input
-                type="text"
-                id="artist"
-                value={this.state.artist}
-                onChange={this.handleChange}
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="album">Album</label>
-              <input
-                type="text"
-                id="album"
-                value={this.state.album}
-                onChange={this.handleChange}
-              />
-            </div>
-            <div className="input-field">
-              <label htmlFor="length">Runtime</label>
-              <input
-                type="number"
-                min="0"
-                step=".01"
-                id="length"
-                value={this.state.length}
                 onChange={this.handleChange}
               />
             </div>
