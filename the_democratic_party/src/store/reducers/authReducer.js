@@ -12,7 +12,7 @@ export const addTokenToFirestore = token => async (
     const firestore = getFirestore();
     let data = { token, timestamp: firestore.FieldValue.serverTimestamp() }; //adding a timestamp so I can aleways grab the most recent token...
     await firestore.collection('spotifyToken').add(data);
-    history.push('/');
+    // history.push('/');
   } catch (err) {
     console.error(err);
   }

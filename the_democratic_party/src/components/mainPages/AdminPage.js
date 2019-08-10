@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { addASong } from '../../store/reducers/songReducer';
 import { connect } from 'react-redux';
+import Spotify from './Spotify';
 
 export class AdminPage extends Component {
   constructor() {
@@ -84,6 +85,7 @@ export class AdminPage extends Component {
             </div>
           </form>
         </div>
+        <Spotify className="spotifyPlayer" />
       </div>
     );
   }

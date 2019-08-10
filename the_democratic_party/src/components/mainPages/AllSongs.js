@@ -33,7 +33,6 @@ export class AllSongs extends Component {
               })}
           </tbody>
         </table>
-        <Spotify className="spotifyPlayer" />
       </div>
     );
   }
