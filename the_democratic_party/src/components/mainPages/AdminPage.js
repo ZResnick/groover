@@ -3,6 +3,10 @@ import { addASong } from '../../store/reducers/songReducer';
 import { connect } from 'react-redux';
 import Spotify from './Spotify';
 
+//connect certain compomnents with the firestore using the firestoreConnect and compose at the bottom of this file:
+import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
+
 export class AdminPage extends Component {
   constructor() {
     super();
@@ -26,6 +30,7 @@ export class AdminPage extends Component {
 
   handelSubmit = evt => {
     evt.preventDefault();
+
     this.props.addASong(this.state);
     this.setState({
       title: '',
@@ -97,7 +102,18 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
+const mapStateToProps = state => {
+  return {
+    tokens: state.firestore.ordered.spotifyToken,
+  };
+};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect([
+    { collection: 'spotifyToken', orderBy: [['timestamp', 'desc']] },
+  ])
 )(AdminPage);
