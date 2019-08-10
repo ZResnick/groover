@@ -9,8 +9,10 @@ import { compose } from 'redux';
 
 export class AllSongs extends Component {
   render() {
-    let { songs } = this.props;
+    let { songs, tokens } = this.props;
     let pageSongs = songs && [...songs];
+    let token = tokens && tokens[0];
+    console.log(token);
     let orderedSongs =
       pageSongs && pageSongs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
     return (
@@ -41,6 +43,7 @@ export class AllSongs extends Component {
 const mapStateToProps = state => {
   return {
     songs: state.firestore.ordered.Songs,
+    tokens: state.firestore.ordered.spotifyToken,
   };
 };
 
@@ -50,5 +53,8 @@ export default compose(
     mapStateToProps,
     null
   ),
-  firestoreConnect([{ collection: 'Songs', orderBy: [['upvotes', 'desc']] }])
+  firestoreConnect([
+    { collection: 'Songs', orderBy: [['upvotes', 'desc']] },
+    { collection: 'spotifyToken', orderBy: [['timestamp', 'desc']] },
+  ])
 )(AllSongs);

@@ -2,7 +2,7 @@ import history from '../../history';
 
 const initialState = {};
 
-//this thunk will add the token tio firestore so I can access it elsewhere
+//this thunk will add the token to firestore so I can access it elsewhere,. namely in my allSongs component
 export const addTokenToFirestore = token => async (
   dispatch,
   getState,
@@ -10,7 +10,8 @@ export const addTokenToFirestore = token => async (
 ) => {
   try {
     const firestore = getFirestore();
-    await firestore.collection('spotifyToken').add({ token });
+    let data = { token, timestamp: firestore.FieldValue.serverTimestamp() }; //adding a timestamp so I can aleways grab the most recent token...
+    await firestore.collection('spotifyToken').add(data);
     history.push('/');
   } catch (err) {
     console.error(err);

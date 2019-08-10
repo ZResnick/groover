@@ -36,6 +36,7 @@ class Spotify extends Component {
       this.getCurrentlyPlaying(_token);
       this.playThisSong(_token);
       this.viewDevices(_token);
+      this.props.addTokenToFirestore(_token);
     }
   }
 
@@ -48,7 +49,6 @@ class Spotify extends Component {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
       },
       success: data => {
-        this.props.addTokenToFirestore(token);
         this.setState({
           item: data.item,
           is_playing: data.is_playing,
@@ -67,7 +67,7 @@ class Spotify extends Component {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
       },
       success: data => {
-        console.log('data.tracks.items.0.uri:', data.tracks.items[0].uri);
+        //console.log('data.tracks.items.0.uri:', data.tracks.items[0].uri);
         let songUri = data.tracks.items[0].uri;
       },
     });
@@ -82,7 +82,7 @@ class Spotify extends Component {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
       },
       success: data => {
-        console.log('devices', data);
+        //console.log('devices', data);
       },
     });
   }
