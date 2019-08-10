@@ -7,8 +7,8 @@ export default function Navbar() {
   return (
     <nav className="nav-wrapper grey darken-3">
       <div className="container">
-        <Link to="/" className="brand-logo left">
-          Party Time
+        <Link to="/" id="groover" className="brand-logo left">
+          groover
         </Link>
         <SignedInLinks />
         <SignedOutLinks />

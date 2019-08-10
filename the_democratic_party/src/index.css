@@ -87,3 +87,7 @@ textarea.materialize-textarea:focus:focus:not([readonly]) {
 .spotify-player {
   background-color: #ec407a;
 }
+
+#groover .navlinks {
+  font-family: 'Comfortaa', cursive;
+}

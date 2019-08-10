@@ -3,6 +3,8 @@ import * as $ from 'jquery';
 import { authEndpoint, clientId, redirectUri, scopes } from './spotifyConfig';
 import hash from './hash';
 import Player from './Player';
+import { addTokenToFirestore } from '../../store/reducers/authReducer';
+import { connect } from 'react-redux';
 
 class Spotify extends Component {
   constructor() {
@@ -46,6 +48,7 @@ class Spotify extends Component {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
       },
       success: data => {
+        this.props.addTokenToFirestore(token);
         this.setState({
           item: data.item,
           is_playing: data.is_playing,
@@ -79,7 +82,7 @@ class Spotify extends Component {
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
       },
       success: data => {
-        console.log('DEVICES', data);
+        console.log('devices', data);
       },
     });
   }
@@ -116,4 +119,13 @@ class Spotify extends Component {
   }
 }
 
-export default Spotify;
+const mapDispatchToProps = dispatch => ({
+  addTokenToFirestore: song => {
+    dispatch(addTokenToFirestore(song));
+  },
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Spotify);
