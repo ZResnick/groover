@@ -18,6 +18,7 @@ export class AdminPage extends Component {
       album: '',
       length: '',
       token: '',
+      possibleSongs: '',
     };
 
     this.handleChange = this.handelChange.bind(this);
@@ -35,9 +36,14 @@ export class AdminPage extends Component {
     }
   }
 
-  handelChange = evt => {
+  handelChange = async evt => {
     this.setState({
       [evt.target.id]: evt.target.value,
+    });
+    await spotifyApi.searchTracks(this.state.title, null, (err, data) => {
+      this.setState({
+        possibleSongs: data,
+      });
     });
   };
 
@@ -80,6 +86,22 @@ export class AdminPage extends Component {
                 onChange={this.handleChange}
               />
             </div>
+            {this.state.possibleSongs &&
+              this.state.possibleSongs.tracks &&
+              this.state.possibleSongs.tracks.items && (
+                <div>
+                  <h4>Possible Songs...</h4>
+                  <ul>
+                    {this.state.possibleSongs.tracks.items.map(song => {
+                      return (
+                        <li>
+                          {song.name}, {song.artists[0].name}{' '}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
             <div className="input-field">
               <button className="btn pink lighten-1 z-depth-0">Add Song</button>
             </div>

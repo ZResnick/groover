@@ -43,6 +43,13 @@ export class AllSongs extends Component {
         console.log(
           `ADDING ${topSong.title} by ${topSong.artist} TO THE GROOVER PLAYLIST`
         );
+        await spotifyApi.getPlaylistTracks(
+          grooverPlaylist,
+          null,
+          (err, data) => {
+            console.log('playlist data:', data);
+          }
+        );
         await spotifyApi.addTracksToPlaylist(
           grooverPlaylist,
           [topSong.uri],
