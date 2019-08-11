@@ -18,12 +18,11 @@ export const addASong = song => async (
 
 export const removeSong = id => async (
   dispatch,
-  getState, //the firestore functions on line 38 WILL NOT WORK WITHOUT THIS GETSTATE!!!
+  getState,
   { getFirebase, getFirestore }
 ) => {
   try {
-    const firestore = getFirestore(); //this is the call that gets us access to firestore:
-    //gets us a reference to the Songs Collection and then adds a document using .add({document })
+    const firestore = getFirestore();
     await firestore
       .collection('Songs')
       .doc(id)

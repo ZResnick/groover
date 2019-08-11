@@ -22,6 +22,7 @@ export class AllSongs extends Component {
   componentDidMount() {
     if (this.props.tokens) {
       let token = this.props.tokens[0].token;
+      console.log('hello');
       spotifyApi.setAccessToken(token);
       this.getCurrentlyPlaying(token);
     }
@@ -29,7 +30,6 @@ export class AllSongs extends Component {
 
   getCurrentlyPlaying(token) {
     spotifyApi.getMyCurrentPlayingTrack(null, (err, data) => {
-      console.log(data);
       let currentProgress = data.progress_ms;
       let songLength = data.item.duration_ms;
       let timeToEnd = songLength - currentProgress - 2000;
@@ -40,14 +40,16 @@ export class AllSongs extends Component {
           pageSongs &&
           pageSongs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
         let topSong = orderedSongs[0];
-        console.log('ADDING SONG TO PLAYLIST');
+        console.log(
+          `ADDING ${topSong.title} by ${topSong.artist} TO THE GROOVER PLAYLIST`
+        );
         await spotifyApi.addTracksToPlaylist(
           grooverPlaylist,
           [topSong.uri],
           null,
           (err, data) => {
-            if (err || data) {
-              console.log('err and data', err, data);
+            if (err) {
+              console.log('err', err);
             }
           }
         );
@@ -68,6 +70,7 @@ export class AllSongs extends Component {
           <table className="container">
             <tbody>
               <tr>
+                <th>Remove</th>
                 <th>Title</th>
                 <th>Artist</th>
                 <th>Album</th>
@@ -95,11 +98,17 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => ({
+  removeSong: id => {
+    dispatch(removeSong(id));
+  },
+});
+
 //use compose to connect connect and firestoreConnect together...
 export default compose(
   connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
   ),
   firestoreConnect([
     { collection: 'Songs', orderBy: [['upvotes', 'desc']] },

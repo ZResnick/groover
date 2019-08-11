@@ -25,7 +25,7 @@ export class AdminPage extends Component {
   }
 
   componentDidMount() {
-    let _token = this.props.token && this.props.token;
+    let _token = this.props.token && this.props.token[0];
     if (_token) {
       // Set token
       this.setState({
@@ -41,11 +41,11 @@ export class AdminPage extends Component {
     });
   };
 
-  handelSubmit = evt => {
+  handelSubmit = async evt => {
     evt.preventDefault();
-    spotifyApi.searchTracks(this.state.title, null, (err, data) => {
+    await spotifyApi.searchTracks(this.state.title, null, (err, data) => {
       //could put a utility feature here to filter songs by track and artist but going to simplest option first, taking rhe first song
-      let firstSong = data.tracks.items[0];
+      let firstSong = data && data.tracks.items[0];
       let songToAdd = {
         title: firstSong.name,
         artist: firstSong.artists[0].name,
