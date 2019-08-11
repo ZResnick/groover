@@ -19,7 +19,7 @@ export class AllSongs extends Component {
     this.getCurrentlyPlaying.bind(this);
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     if (this.props.tokens) {
       let token = this.props.tokens[0].token;
       console.log('hello');
@@ -30,6 +30,7 @@ export class AllSongs extends Component {
 
   getCurrentlyPlaying(token) {
     spotifyApi.getMyCurrentPlayingTrack(null, (err, data) => {
+      let currentSong = data.item.name;
       let currentProgress = data.progress_ms;
       let songLength = data.item.duration_ms;
       let timeToEnd = songLength - currentProgress - 2000;
@@ -43,21 +44,25 @@ export class AllSongs extends Component {
         console.log(
           `ADDING ${topSong.title} by ${topSong.artist} TO THE GROOVER PLAYLIST`
         );
-        await spotifyApi.getPlaylistTracks(
+        await spotifyApi.getPlaylist(
           grooverPlaylist,
           null,
-          (err, data) => {
-            console.log('playlist data:', data);
-          }
-        );
-        await spotifyApi.addTracksToPlaylist(
-          grooverPlaylist,
-          [topSong.uri],
-          null,
-          (err, data) => {
-            if (err) {
-              console.log('err', err);
-            }
+          async (err, data) => {
+            const snapshot = data.snapshot_id;
+            let songs = data.tracks.items;
+            let currentPosition = songs.findIndex(
+              song => song.track.name === currentSong
+            );
+            await spotifyApi.addTracksToPlaylist(
+              grooverPlaylist,
+              [topSong.uri],
+              { position: currentPosition + 1 },
+              (err, data) => {
+                if (err) {
+                  console.log('err', err);
+                }
+              }
+            );
           }
         );
       }, timeToEnd);

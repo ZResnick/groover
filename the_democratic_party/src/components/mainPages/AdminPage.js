@@ -52,16 +52,27 @@ export class AdminPage extends Component {
     await spotifyApi.searchTracks(this.state.title, null, (err, data) => {
       //could put a utility feature here to filter songs by track and artist but going to simplest option first, taking rhe first song
       let firstSong = data && data.tracks.items[0];
-      let songToAdd = {
-        title: firstSong.name,
-        artist: firstSong.artists[0].name,
-        album: firstSong.album.name,
-        length: firstSong.duration_ms,
-        upvotes: 0,
-        songId: firstSong.id,
-        uri: firstSong.uri,
-      };
-      this.props.addASong(songToAdd);
+      if (!firstSong) {
+        alert(
+          "That song doen't seem to exist.  Please check your spelling and try again."
+        );
+      } else {
+        let songToAdd = {
+          title: firstSong.name,
+          artist: firstSong.artists[0].name,
+          album: firstSong.album.name,
+          length: firstSong.duration_ms,
+          upvotes: 0,
+          songId: firstSong.id,
+          uri: firstSong.uri,
+        };
+        this.props.addASong(songToAdd);
+        alert(
+          `${
+            firstSong.name
+          } successfully added to the playlist.  Continue adding more songs below.`
+        );
+      }
     });
     this.setState({
       title: '',
@@ -86,7 +97,8 @@ export class AdminPage extends Component {
                 onChange={this.handleChange}
               />
             </div>
-            {this.state.possibleSongs &&
+            {this.state.title &&
+              this.state.possibleSongs &&
               this.state.possibleSongs.tracks &&
               this.state.possibleSongs.tracks.items && (
                 <div>
@@ -94,8 +106,8 @@ export class AdminPage extends Component {
                   <ul>
                     {this.state.possibleSongs.tracks.items.map(song => {
                       return (
-                        <li>
-                          {song.name}, {song.artists[0].name}{' '}
+                        <li key={song.id}>
+                          {song.name}, {song.artists[0].name}
                         </li>
                       );
                     })}

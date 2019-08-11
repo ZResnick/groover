@@ -40,6 +40,7 @@ class SingleSong extends Component {
           >{`⇧`}</button>
           {this.props.upvotes}
           <button
+            disabled={!this.props.upvotes}
             onClick={() => this.downvote(this.props.id, this.props.upvotes)}
           >{`⇩`}</button>
         </th>
