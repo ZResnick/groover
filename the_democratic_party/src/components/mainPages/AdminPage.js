@@ -46,7 +46,6 @@ export class AdminPage extends Component {
     spotifyApi.searchTracks(this.state.title, null, (err, data) => {
       //could put a utility feature here to filter songs by track and artist but going to simplest option first, taking rhe first song
       let firstSong = data.tracks.items[0];
-      console.log(firstSong);
       let songToAdd = {
         title: firstSong.name,
         artist: firstSong.artists[0].name,

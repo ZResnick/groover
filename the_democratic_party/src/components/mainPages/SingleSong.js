@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { upvote, downvote } from '../../store/reducers/songReducer';
+import { upvote, downvote, removeSong } from '../../store/reducers/songReducer';
 
 class SingleSong extends Component {
   downvote(id, votes) {

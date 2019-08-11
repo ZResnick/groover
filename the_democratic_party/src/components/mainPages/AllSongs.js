@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import SingleSong from './SingleSong';
 import { connect } from 'react-redux';
 import Spotify from './Spotify';
+import grooverPlaylist from './spotifyConfig';
+import removeSong from '../../store/reducers/songReducer';
 
 //connect certain compomnents with the firestore using the firestoreConnect and compose at the bottom of this file:
 import { firestoreConnect } from 'react-redux-firebase';
@@ -12,6 +14,11 @@ import SpotifyWebApi from 'spotify-web-api-js';
 var spotifyApi = new SpotifyWebApi();
 
 export class AllSongs extends Component {
+  constructor() {
+    super();
+    this.getCurrentlyPlaying.bind(this);
+  }
+
   componentDidMount() {
     if (this.props.tokens) {
       let token = this.props.tokens[0].token;
@@ -23,6 +30,28 @@ export class AllSongs extends Component {
   getCurrentlyPlaying(token) {
     spotifyApi.getMyCurrentPlayingTrack(null, (err, data) => {
       console.log(data);
+      let currentProgress = data.progress_ms;
+      let songLength = data.item.duration_ms;
+      let timeToEnd = songLength - currentProgress - 2000;
+      setTimeout(async () => {
+        let songs = this.props.songs;
+        let pageSongs = songs && [...songs];
+        let orderedSongs =
+          pageSongs &&
+          pageSongs.sort((a, b) => (a.upvotes > b.upvotes ? -1 : 1));
+        let topSong = orderedSongs[0];
+        console.log('ADDING SONG TO PLAYLIST');
+        await spotifyApi.addTracksToPlaylist(
+          grooverPlaylist,
+          [topSong.uri],
+          null,
+          (err, data) => {
+            if (err || data) {
+              console.log('err and data', err, data);
+            }
+          }
+        );
+      }, timeToEnd);
     });
   }
 

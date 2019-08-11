@@ -72,9 +72,6 @@ class Spotify extends Component {
                 is_playing={this.state.is_playing}
                 progress_ms={this.progress_ms}
               />
-              <button onClick={() => this.playThisSong(this.state.token)}>
-                Click ME!!!!!
-              </button>
             </div>
           )}
         </header>
