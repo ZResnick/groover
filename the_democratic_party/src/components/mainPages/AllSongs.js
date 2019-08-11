@@ -103,6 +103,6 @@ export default compose(
   ),
   firestoreConnect([
     { collection: 'Songs', orderBy: [['upvotes', 'desc']] },
-    { collection: 'spotifyToken', orderBy: [['timestamp', 'desc']] },
+    { collection: 'spotifyToken' },
   ])
 )(AllSongs);

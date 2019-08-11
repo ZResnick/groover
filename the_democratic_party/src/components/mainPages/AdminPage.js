@@ -25,7 +25,7 @@ export class AdminPage extends Component {
   }
 
   componentDidMount() {
-    let _token = this.props.tokens && this.props.tokens[0];
+    let _token = this.props.token && this.props.token;
     if (_token) {
       // Set token
       this.setState({
@@ -99,7 +99,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => {
   return {
-    tokens: state.firestore.ordered.spotifyToken,
+    token: state.firestore.ordered.spotifyToken,
   };
 };
 
@@ -108,7 +108,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect([
-    { collection: 'spotifyToken', orderBy: [['timestamp', 'desc']] },
-  ])
+  firestoreConnect([{ collection: 'spotifyToken' }])
 )(AdminPage);

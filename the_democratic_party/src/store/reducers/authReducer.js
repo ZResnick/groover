@@ -10,8 +10,12 @@ export const addTokenToFirestore = token => async (
 ) => {
   try {
     const firestore = getFirestore();
-    let data = { token, timestamp: firestore.FieldValue.serverTimestamp() }; //adding a timestamp so I can aleways grab the most recent token...
-    await firestore.collection('spotifyToken').add(data);
+    let data = { token, timestamp: firestore.FieldValue.serverTimestamp() }; //adding a timestamp
+    //making it so that I only ever store a single token in my database called currentToken
+    await firestore
+      .collection('spotifyToken')
+      .doc('CurrentToken')
+      .set(data);
     // history.push('/');
   } catch (err) {
     console.error(err);
