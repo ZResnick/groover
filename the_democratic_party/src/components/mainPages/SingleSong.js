@@ -37,12 +37,12 @@ class SingleSong extends Component {
         <th>
           <button
             onClick={() => this.upvote(this.props.id, this.props.upvotes)}
-          >{`⇧`}</button>
+          >{`♡`}</button>
           {this.props.upvotes}
           <button
             disabled={!this.props.upvotes}
             onClick={() => this.downvote(this.props.id, this.props.upvotes)}
-          >{`⇩`}</button>
+          >{`⊘`}</button>
         </th>
       </tr>
     );

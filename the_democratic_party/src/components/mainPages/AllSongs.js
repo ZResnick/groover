@@ -22,18 +22,19 @@ export class AllSongs extends Component {
   componentDidUpdate() {
     if (this.props.tokens) {
       let token = this.props.tokens[0].token;
-      console.log('hello');
       spotifyApi.setAccessToken(token);
       this.getCurrentlyPlaying(token);
     }
   }
 
+  //I cant get the information from get spotifyApi.getMyCurrentPlayingTrack to appear on state which made me have to go throught the madness below....
+
   getCurrentlyPlaying(token) {
     spotifyApi.getMyCurrentPlayingTrack(null, (err, data) => {
-      let currentSong = data.item.name;
-      let currentProgress = data.progress_ms;
-      let songLength = data.item.duration_ms;
-      let timeToEnd = songLength - currentProgress - 2000;
+      let currentSong = data && data.item.name;
+      let currentProgress = data && data.progress_ms;
+      let songLength = data && data.item.duration_ms;
+      let timeToEnd = songLength - currentProgress - 5000;
       setTimeout(async () => {
         let songs = this.props.songs;
         let pageSongs = songs && [...songs];
@@ -48,10 +49,27 @@ export class AllSongs extends Component {
           grooverPlaylist,
           null,
           async (err, data) => {
-            const snapshot = data.snapshot_id;
-            let songs = data.tracks.items;
-            let currentPosition = songs.findIndex(
-              song => song.track.name === currentSong
+            const snapshot = data && data.snapshot_id;
+            let songs = data && data.tracks.items;
+            let currentPosition =
+              songs && songs.findIndex(song => song.track.name === currentSong);
+            let indicesToDestroy = [];
+            if (songs && songs.length) {
+              for (let i = currentPosition + 1; i < songs.length; i++) {
+                indicesToDestroy.push(i);
+              }
+            } else {
+              indicesToDestroy.push(1);
+            }
+            await spotifyApi.removeTracksFromPlaylistInPositions(
+              grooverPlaylist,
+              indicesToDestroy,
+              snapshot,
+              (err, success) => {
+                if (err) {
+                  console.log('err', err);
+                }
+              }
             );
             await spotifyApi.addTracksToPlaylist(
               grooverPlaylist,
@@ -79,10 +97,10 @@ export class AllSongs extends Component {
       <div>
         <div className="allSongs container">
           <h3 className="center">All Songs</h3>
-          <table className="container">
+          <table className="container songList">
             <tbody>
               <tr>
-                <th>Remove</th>
+                <th className="tableHeaders">Remove</th>
                 <th>Title</th>
                 <th>Artist</th>
                 <th>Album</th>
@@ -96,7 +114,7 @@ export class AllSongs extends Component {
             </tbody>
           </table>
         </div>
-        <div>{token && <Spotify />}</div>
+        <div className="player">{token && <Spotify />}</div>
       </div>
     );
   }

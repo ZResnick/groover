@@ -10,7 +10,7 @@ export const addASong = song => async (
     const firestore = getFirestore(); //this is the call that gets us access to firestore:
     //gets us a reference to the Songs Collection and then adds a document using .add({document })
     await firestore.collection('Songs').add({ ...song });
-    history.push('/adminPage');
+    history.push('/');
   } catch (err) {
     console.error(err);
   }

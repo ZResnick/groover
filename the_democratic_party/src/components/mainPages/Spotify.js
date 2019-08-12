@@ -44,9 +44,9 @@ class Spotify extends Component {
     // Make a call using the token
     spotifyApi.getMyCurrentPlayingTrack(null, (err, data) => {
       this.setState({
-        item: data.item,
-        is_playing: data.is_playing,
-        progress_ms: data.progress_ms,
+        item: data && data.item,
+        is_playing: data && data.is_playing,
+        progress_ms: data && data.progress_ms,
       });
     });
   }
@@ -65,13 +65,18 @@ class Spotify extends Component {
               Login to Spotify
             </a>
           )}
-          {this.state.token && (
+          {this.state.token && this.state.item && (
             <div>
               <Player
                 item={this.state.item}
                 is_playing={this.state.is_playing}
                 progress_ms={this.progress_ms}
               />
+            </div>
+          )}
+          {this.state.token && !this.state.item && (
+            <div>
+              <h5>Please play a song on your groover playlist...</h5>
             </div>
           )}
         </header>

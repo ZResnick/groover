@@ -67,11 +67,6 @@ export class AdminPage extends Component {
           uri: firstSong.uri,
         };
         this.props.addASong(songToAdd);
-        alert(
-          `${
-            firstSong.name
-          } successfully added to the playlist.  Continue adding more songs below.`
-        );
       }
     });
     this.setState({
